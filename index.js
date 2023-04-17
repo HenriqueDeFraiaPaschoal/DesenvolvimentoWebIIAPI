@@ -54,3 +54,22 @@ app.get('/tasks/id',(req, res) => {
   task = tasks.find((e) =>e.id === id)
   res.send(JSON.stringify(task))
 });
+
+// POST /tasks: Cria uma nova tarefa na lista
+// EXEMPLO DE BODY PARA O POST
+  // {
+  //   "title": "olá",
+  //   "description": "dizer olá",
+  //   "completed": true
+  // }
+  app.post('/tasks', (req, res) => {
+    // Cria a nova task com os dados do body
+    newTask = {
+      id: validId(),
+      title: req.body.title,
+      description: req.body.description,
+      completed: req.body.completed
+    }
+    tasks[tasks.length - 1] = newTask;
+    res.send(`Task de número ${newTask.id} foi criada com sucesso!`)
+  });
