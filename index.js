@@ -41,3 +41,8 @@ let validId = () => {
   }
   return newId;
 }
+
+// GET /tasks: Retorna todas as tarefas da lista
+app.get('/tasks', (req, res) => {
+  res.send(JSON.stringify(tasks))
+});
