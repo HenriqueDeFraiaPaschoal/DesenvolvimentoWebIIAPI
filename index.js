@@ -50,6 +50,7 @@ app.get('/tasks', (req, res) => {
 
 // GET /tasks/id: Retorna a tarefa com id correspondente
 app.get('/tasks/id',(req, res) => {
+  let idExist = tasks.find((e) => e.id === req.body.id);
   if (!req.body.id || !idExist) {
     res.statusCode = 404;
     res.send('ERRO! Passe um id válido');
@@ -69,6 +70,12 @@ app.get('/tasks/id',(req, res) => {
   //   "completed": true
   // }
   app.post('/tasks', (req, res) => {
+    let idExist = tasks.find((e) => e.id === req.body.id);
+    if (!req.body.title) {
+      res.statusCode = 404;
+      res.send('ERRO! Passe um título para a task!');
+      return
+    }
     // Cria a nova task com os dados do body
     newTask = {
       id: validId(),
@@ -83,7 +90,7 @@ app.get('/tasks/id',(req, res) => {
 // PUT /tasks/id: Atualiza a tarefa com id correspondente
 app.put('/tasks/id', (req, res) => {
   let idExist = tasks.find((e) => e.id === req.body.id);
-  if (!req.body.id || !idExist) {
+  if (!req.body.id || !idExist || !req.body.title) {
     res.statusCode = 404;
     res.send('ERRO! Passe um id válido');
     return
@@ -96,7 +103,8 @@ app.put('/tasks/id', (req, res) => {
 
 // DELETE /tasks/id: Remove a tarefa com id correspondente
 app.delete('/tasks/id',(req, res) => {
-  if (!req.body.id || !idExist) {
+  let idExist = tasks.find((e) => e.id === req.body.id);
+  if (!req.body.id || !idExist || !req.body.title) {
     res.statusCode = 404;
     res.send('ERRO! Passe um id válido');
     return
