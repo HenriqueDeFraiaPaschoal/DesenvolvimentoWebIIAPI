@@ -46,3 +46,11 @@ let validId = () => {
 app.get('/tasks', (req, res) => {
   res.send(JSON.stringify(tasks))
 });
+
+// GET /tasks/id: Retorna a tarefa com id correspondente
+app.get('/tasks/id',(req, res) => {
+  // const id = req.body.id; mesma coisa
+  let { id } = req.body;
+  task = tasks.find((e) =>e.id === id)
+  res.send(JSON.stringify(task))
+});
