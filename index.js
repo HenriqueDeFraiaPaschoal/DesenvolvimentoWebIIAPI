@@ -73,3 +73,18 @@ app.get('/tasks/id',(req, res) => {
     tasks[tasks.length - 1] = newTask;
     res.send(`Task de número ${newTask.id} foi criada com sucesso!`)
   });
+
+// PUT /tasks/id: Atualiza a tarefa com id correspondente
+app.put('/tasks/id', (req, res) => {
+  let taskIndex = tasks.findIndex((e) => e.id === req.body.id);
+  tasks[taskIndex] = req.body;
+  res.send(`Task de número ${tasks[taskIndex].id} foi alterada com sucesso!`)
+})
+
+
+// DELETE /tasks/id: Remove a tarefa com id correspondente
+app.delete('/tasks',(req, res) => {
+  let taskIndex = tasks.findIndex((e) => e.id === req.body.id);
+  delete tasks[taskIndex];
+  res.send(`Task de número ${tasks[taskIndex].id} foi deletada com sucesso!`)
+})
