@@ -45,17 +45,15 @@ app.get('/tasks', (req, res) => {
 });
 
 // GET /tasks/id: Retorna a tarefa com id correspondente
-app.get('/tasks/id',(req, res) => {
-  let idExist = tasks.find((e) => e.id === req.body.id);
-  if (!req.body.id || !idExist) {
-    res.statusCode = 404;
-    res.send('ERRO! Passe um id válido');
+app.get('/tasks/id/:id',(req, res) => {
+  const { id } = req.params;
+  let idExist = tasks.find((e) => e.id === id);
+  if (!idExist) {
+    res.status(404).send('ERRO! Passe um id válido');
     return
   }
-  // const id = req.body.id; mesma coisa
-  let { id } = req.body;
-  task = tasks.find((e) =>e.id === id)
-  res.send(JSON.stringify(task))
+  let task = tasks.find((e) =>e.id === id);
+  res.send(JSON.stringify(task));
 });
 
 // POST /tasks: Cria uma nova tarefa na lista
@@ -68,8 +66,7 @@ app.get('/tasks/id',(req, res) => {
   app.post('/tasks', (req, res) => {
     let idExist = tasks.find((e) => e.id === req.body.id);
     if (!req.body.title) {
-      res.statusCode = 404;
-      res.send('ERRO! Passe um título para a task!');
+      res.status(404).send('ERRO! Passe um título para a task!');
       return
     }
     // Cria a nova task com os dados do body
@@ -84,28 +81,29 @@ app.get('/tasks/id',(req, res) => {
   });
 
 // PUT /tasks/id: Atualiza a tarefa com id correspondente
-app.put('/tasks/id', (req, res) => {
-  let idExist = tasks.find((e) => e.id === req.body.id);
-  if (!req.body.id || !idExist || !req.body.title) {
-    res.statusCode = 404;
-    res.send('ERRO! Passe um id válido');
+app.put('/tasks/id/:id', (req, res) => {
+  const { id } = req.params;
+  let idExist = tasks.find((e) => e.id === id);
+  if (!idExist) {
+    res.status(404).send('ERRO! Passe um id válido');
     return
   }
-  let taskIndex = tasks.findIndex((e) => e.id === req.body.id);
+  let taskIndex = tasks.findIndex((e) => e.id === id);
   tasks[taskIndex] = req.body;
-  res.send(`Task de número ${tasks[taskIndex].id} foi alterada com sucesso!`)
+  tasks[taskIndex].id = id;
+  res.send(`A task de número ${id} foi alterada com sucesso!`)
 })
 
 
 // DELETE /tasks/id: Remove a tarefa com id correspondente
-app.delete('/tasks/id',(req, res) => {
-  let idExist = tasks.find((e) => e.id === req.body.id);
-  if (!req.body.id || !idExist || !req.body.title) {
-    res.statusCode = 404;
-    res.send('ERRO! Passe um id válido');
+app.delete('/tasks/id/:id',(req, res) => {
+  const { id } = req.params;
+  let idExist = tasks.find((e) => e.id === id);
+  if (!idExist) {
+    res.status(404).send('ERRO! Passe um id válido');
     return
   }
-  let taskIndex = tasks.findIndex((e) => e.id === req.body.id);
+  let taskIndex = tasks.findIndex((e) => e.id === id);
   tasks.splice(taskIndex, 1);
-  res.send(`Task de número ${taskIndex} foi deletada com sucesso!`)
+  res.send(`Task de número ${id} foi deletada com sucesso!`)
 })
